@@ -28,6 +28,11 @@ let Screen = function(width, height, _scale, canvas) {
 		for (let i = 0; i < 3; i++) color += ("0" + imageData.data[i].toString(16)).substr(-2);
 		return color;
 	};
+	
+	this.clear = function() {
+		context.fillStyle = "#ffffff";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+	}
 };
 
 let Ant = function(_screen, _pattern) {
@@ -57,21 +62,11 @@ let Ant = function(_screen, _pattern) {
 				}
 			}
 			switch(front) {
-				case UP:
-					y--;
-				break;
-				case LEFT:
-					x--;
-				break;
-				case DOWN:
-					y++;
-				break;
-				case RIGHT:
-					x++;
-				break;
-				default:
-					alert("??");
-				break;
+				case UP   : y--; break;
+				case LEFT : x--; break;
+				case DOWN : y++; break;
+				case RIGHT: x++; break;
+				default   : alert("??");
 			}
 			
 			if (x < 0) {
@@ -118,20 +113,9 @@ let TuringMachine = function(_screen) {
 			function() {
 				switch (self.state) {
 					case START:
-						if (pattern.length == 0) {
-							
-							self.addPattern(LEFT);
-							self.addPattern(RIGHT);
-							self.addPattern(RIGHT);
-							self.addPattern(RIGHT);
-							self.addPattern(RIGHT);
-							self.addPattern(LEFT);
-							self.addPattern(LEFT);
-							self.addPattern(LEFT);
-							self.addPattern(RIGHT);
-							self.addPattern(RIGHT);
-							self.addPattern(RIGHT);
-							
+						if (pattern.length === 0) {
+							clearInterval(timer);
+							break;
 						}
 						ant = new Ant(screen, pattern);
 						self.state = PLAY;
@@ -151,14 +135,24 @@ let TuringMachine = function(_screen) {
 	};
 	
 	self.addPattern = function(direction) {
-		if (pattern.length == colors.length) return;
+		if (pattern.length === colors.length) return;
 		pattern.push({direction: direction, color: colors[pattern.length]});
 	};
+	
+	self.deletePattern = function() {
+		pattern.pop();
+	}
+	
+	self.reset = function() {
+		clearInterval(timer);
+		screen.clear();
+		self.state = START;
+	}
 };
 
 $(function() {
-	let width = 500;
-	let height = 500;
+	let width = 400;
+	let height = 250;
 	let scale = 2;
 	
 	let canvas = document.getElementById("canvas");
@@ -169,19 +163,23 @@ $(function() {
 	$("#left").click(function() {
 		if ($("#rule").text().length == 11) return false;
 		$("#rule").text($("#rule").text() + "L");
+		tm.addPattern(LEFT);
 	});
 	
 	$("#right").click(function() {
 		if ($("#rule").text().length == 11) return false;
 		$("#rule").text($("#rule").text() + "R");
+		tm.addPattern(RIGHT);
 	});
 	
 	$("#delete").click(function() {
 		$("#rule").text($("#rule").text().slice(0, -1));
+		tm.deletePattern();
 	});
 	
 	$("#play").click(function() {
-		if (tm.state == STOP) tm.state = PLAY;
+		if (tm.state === PLAY) return;
+		if (tm.state === STOP) tm.state = PLAY;
 		tm.execute();
 	});
 	
@@ -190,7 +188,7 @@ $(function() {
 	});
 	
 	$("#reset").click(function() {
-		
+		tm.reset();
 	});
 });
 
