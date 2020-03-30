@@ -97,6 +97,7 @@ let TuringMachine = function(_screen) {
 		"#114514", "#377777", "#364364", "#512810", "#816714",
 		"#c0ffee"
 	];
+	this.maxColorCount = (function() {return colors.length})();
 	// オススメ
 	// lrrrrlllrrr
 	// lrrrrrllrll
@@ -161,13 +162,13 @@ $(function() {
 	let tm = new TuringMachine(screen);
 	
 	$("#left").click(function() {
-		if ($("#rule").text().length == 11) return false;
+		if ($("#rule").text().length == tm.maxColorCount) return false;
 		$("#rule").text($("#rule").text() + "L");
 		tm.addPattern(LEFT);
 	});
 	
 	$("#right").click(function() {
-		if ($("#rule").text().length == 11) return false;
+		if ($("#rule").text().length == tm.maxColorCount) return false;
 		$("#rule").text($("#rule").text() + "R");
 		tm.addPattern(RIGHT);
 	});
