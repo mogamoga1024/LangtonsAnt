@@ -97,7 +97,7 @@ let TuringMachine = function(_screen) {
 		"#114514", "#377777", "#364364", "#512810", "#816714",
 		"#c0ffee"
 	];
-	this.maxColorCount = (function() {return colors.length})();
+	this.maxColorCount = colors.length;
 	// オススメ
 	// lrrrrlllrrr
 	// lrrrrrllrll
@@ -108,33 +108,6 @@ let TuringMachine = function(_screen) {
 	let timer;
 	self.state = START;
 	
-	
-	self.execute = function() {
-		timer = setInterval(
-			function() {
-				switch (self.state) {
-					case START:
-						if (pattern.length === 0) {
-							clearInterval(timer);
-							break;
-						}
-						ant = new Ant(screen, pattern);
-						self.state = PLAY;
-						break;
-					case PLAY:
-						ant.move();
-						break;
-					case STOP:
-						clearInterval(timer);
-						break;
-					default:
-						alert("?");
-				}
-			},
-			delay
-		);
-	};
-	
 	self.addPattern = function(direction) {
 		if (pattern.length === colors.length) return;
 		pattern.push({direction: direction, color: colors[pattern.length]});
@@ -142,6 +115,37 @@ let TuringMachine = function(_screen) {
 	
 	self.deletePattern = function() {
 		pattern.pop();
+	}
+	
+	self.play = function() {
+		if (self.state === START || self.state === STOP) {
+			timer = setInterval(
+				function() {
+					switch (self.state) {
+						case START:
+							if (pattern.length === 0) {
+								clearInterval(timer);
+								break;
+							}
+							ant = new Ant(screen, pattern);
+							self.state = PLAY;
+							break;
+						case PLAY:
+							ant.move();
+							break;
+						case STOP:
+							self.state = PLAY;
+							break;
+					}
+				},
+				delay
+			);
+		}
+	}
+	
+	self.stop = function() {
+		clearInterval(timer);
+		self.state = STOP
 	}
 	
 	self.reset = function() {
@@ -178,18 +182,8 @@ $(function() {
 		tm.deletePattern();
 	});
 	
-	$("#play").click(function() {
-		if (tm.state === PLAY) return;
-		if (tm.state === STOP) tm.state = PLAY;
-		tm.execute();
-	});
-	
-	$("#stop").click(function() {
-		tm.state = STOP;
-	});
-	
-	$("#reset").click(function() {
-		tm.reset();
-	});
+	$("#play").click(tm.play);
+	$("#stop").click(tm.stop);
+	$("#reset").click(tm.reset);
 });
 
