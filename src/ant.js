@@ -182,8 +182,26 @@ $(function() {
 		tm.deletePattern();
 	});
 	
-	$("#play").click(tm.play);
-	$("#stop").click(tm.stop);
-	$("#reset").click(tm.reset);
+	$("#play").click(
+		function() {
+			tm.play();
+			$(this).css("display", "none");
+			$("#stop").css("display", "inline");
+		}
+	);
+	$("#stop").click(
+		function() {
+			tm.stop();
+			$(this).css("display", "none");
+			$("#play").css("display", "inline");
+		}
+	);
+	$("#reset").click(
+		function() {
+			tm.reset();
+			$("#play").css("display", "inline");
+			$("#stop").css("display", "none");
+		}
+	);
 });
 

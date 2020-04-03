@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>ant</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <style>
   * {
     font-family: "メイリオ";
@@ -15,6 +16,9 @@
   button {
     width: 100px;
   }
+  #stop {
+    display: none;
+  }
   #canvas {
     border: solid 1px #000;
   }
@@ -26,10 +30,18 @@
   <div id="rule"></div>
   <button id="left">Left</button><!--
   --><button id="right">Right</button><!--
-  --><button id="delete">Delete</button><br>
-  <button id="play">Play</button><!--
-  --><button id="stop">Stop</button><!--
-  --><button id="reset">Reset</button><br>
+  --><button id="delete">
+    <i class="fas fa-backspace"></i>
+  </button><br>
+  <button id="play">
+    <i class="fas fa-play"></i>
+  </button><!--
+  --><button id="stop">
+    <i class="fas fa-pause"></i>
+  </button><!--
+  --><button id="reset">
+    <i class="fas fa-stop"></i>
+  </button><br>
   <canvas id="canvas"></canvas>  
 </body>
 </html>
