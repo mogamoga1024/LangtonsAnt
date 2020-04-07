@@ -44,7 +44,7 @@ let Ant = function(_screen, _pattern) {
 	let steps = 800;
 	
 	this.move = function() {
-		for (let i = 0; i < steps; i++) {
+		for (let i = 0; i < steps; i=(i+1)|0) {
 			let color = screen.color(x, y);
 			for (let j = 0; j < pattern.length; j++) {
 				if (color == pattern[j].color) {
