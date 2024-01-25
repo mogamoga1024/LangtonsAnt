@@ -3,7 +3,7 @@ const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 
-let Screen = function(width, height, _scale, canvas) {
+const Screen = function(width, height, _scale, canvas) {
 	canvas.width = width * _scale;
 	canvas.height = height * _scale;
 	
@@ -35,7 +35,7 @@ let Screen = function(width, height, _scale, canvas) {
 	}
 };
 
-let Ant = function(_screen, _pattern) {
+const Ant = function(_screen, _pattern) {
 	const pattern = _pattern;
 	const screen = _screen;
 	let x = Math.floor(screen.width / 2);
@@ -89,7 +89,7 @@ const START = 0;
 const PLAY = 1;
 const STOP = 2;
 
-let TuringMachine = function(_screen) {
+const TuringMachine = function(_screen) {
 	let self = this;
 	
 	const colors = [
